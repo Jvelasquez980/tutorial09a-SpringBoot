@@ -36,15 +36,12 @@
 
     <ul>
 
-        <li th:each="entry : ${products}">
-
-            <span>Id: <span th:text="${entry.key}"></span> - </span>
-
-            <span>Name: <span th:text="${entry.value.name}"></span> - </span>
-
-            <span>Price: <span th:text="${entry.value.price}"></span> - </span>
-
-            <a th:href="@{'/cart/add/' + ${entry.key}}">Add to cart</a>
+        <li th:each="product : ${products}">
+            <span>Id: <span th:text="${product.id}"></span> - </span>
+            <span>Name: <span th:text="${product.name}"></span> - </span>
+            <span>Price: <span th:text="${product.price}"></span> - </span>
+            <a th:href="@{'/cart/add/' + ${product.id}}">Add to cart</a>
+        </li>
 
         </li>
 

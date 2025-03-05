@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ProductController {
 
@@ -42,16 +44,31 @@ public class ProductController {
 
         return "redirect:/products/" + id; // Redirige a la vista del producto
     }
-    @GetMapping("/products/{id}")
-    public String index(@PathVariable("id") Long id, Model model) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        model.addAttribute("title", product.getName() + " - Online Store");
-        model.addAttribute("product", product);
-        model.addAttribute("newComment", new Comment());
+    @GetMapping("/products")
+    public String index(Model model) {
+        List<Product> products = productRepository.findAll();
+        model.addAttribute("title", "Products - Online Store");
+        model.addAttribute("subtitle", "List of products");
+        model.addAttribute("products", products);
+        return "product/index";
+    }
 
-        return "product/show"; // Retorna a la vista del producto
+    @GetMapping("/products/create")
+    public String createProductForm(Model model) {
+        model.addAttribute("client", new Product());
+        return "product/create";
+    }
+
+    @PostMapping("/products")
+    public String save(Product product) {
+        // Validaciones mínimas
+        if (product.getName() == null || product.getName().isEmpty() ||
+                product.getPrice() == null) {
+            throw new RuntimeException("Name and Price are required");
+        }
+        productRepository.save(product);
+        return "redirect:/products";
     }
 
 }

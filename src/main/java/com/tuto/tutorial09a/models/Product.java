@@ -2,16 +2,13 @@ package com.tuto.tutorial09a.models;
 
 import jakarta.persistence.*;
 
-
 import java.util.ArrayList;
 
 import java.util.List;
 
-
 import org.hibernate.annotations.Fetch;
 
 import org.hibernate.annotations.FetchMode;
-
 
 @Entity
 
@@ -19,92 +16,78 @@ import org.hibernate.annotations.FetchMode;
 
 public class Product {
 
+    @Id
 
-@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-private Long id;
+    private String name;
 
+    private Integer price;
 
-private String name;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 
-private Integer price;
+    @Fetch(FetchMode.SUBSELECT)
 
+    private List<Comment> comments = new ArrayList<>();
 
-@OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    public List<Comment> getComments() {
 
-@Fetch(FetchMode.SUBSELECT)
+        return comments;
 
-private List<Comment> comments = new ArrayList<>();
+    }
 
+    public void setComments(List<Comment> comments) {
 
-public List<Comment> getComments() {
+        this.comments = comments;
 
-return comments;
+    }
 
-}
+    // Constructores
 
+    public Product() {
 
-public void setComments(List<Comment> comments) {
+    }
 
-this.comments = comments;
+    public Product(String name, Integer price) {
 
-}
+        this.name = name;
 
+        this.price = price;
 
-// Constructores
+    }
 
-public Product() {
+    // Getters y Setters
 
-}
+    public Long getId() {
 
+        return id;
 
+    }
 
+    public String getName() {
 
-public Product(String name, Integer price) {
+        return name;
 
-this.name = name;
+    }
 
-this.price = price;
+    public void setName(String name) {
 
-}
+        this.name = name;
 
+    }
 
-// Getters y Setters
+    public Integer getPrice() {
 
-public Long getId() {
+        return price;
 
-return id;
+    }
 
-}
+    public void setPrice(Integer price) {
 
+        this.price = price;
 
-public String getName() {
-
-return name;
-
-}
-
-
-public void setName(String name) {
-
-this.name = name;
-
-}
-
-
-public Integer getPrice() {
-
-return price;
-
-}
-
-
-public void setPrice(Integer price) {
-
-this.price = price;
-
-}
+    }
 
 }
